@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { from } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostsService } from './posts/posts.service';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
@@ -31,6 +31,7 @@ import { routes } from './app.routes';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatExpansionModule,
     MatCardModule,
