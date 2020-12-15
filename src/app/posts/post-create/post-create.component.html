@@ -16,10 +16,10 @@
             <input type="file" hidden #filePicker (change)="onFileChange($event)">
           </div>
           <div>
-            <img [src]="postForm.get('imagePath').value" alt="" width="200" *ngIf="postForm.get('imagePath').value">
+            <img [src]="this.imageUrl" alt="" width="200" *ngIf="this.imageUrl && postForm.get('image').valid">
           </div>
           
           
-        <button mat-raised-button color="primary">Save Post</button>
+        <button mat-raised-button color="primary" [disabled]="postForm.invalid">Save Post</button>
     </form>
 </mat-card>

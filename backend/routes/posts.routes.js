@@ -3,6 +3,7 @@ const PostModel = require('./../models/post.model');
 const router = express.Router();
 const multer = require('multer');
 const { create } = require('./../models/post.model');
+const { of } = require('rxjs');
 
 const MIME_TYPE = {
     'image/png': 'png',
@@ -69,12 +70,19 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.put('/:id',multer({storage: storage}).single('image'),(req, res, next)=> {
-    console.log(req.file);
+    let imagePath;
+    if(req.file) {
+        const url = req.protocol + '://' + req.get('host');
+        imagePath = url + '/images/' + req.file.filename;
+    } else {
+        imagePath = req.body.imagePath;
+    }
     const id = req.params.id;
     const post = new PostModel({
         _id: id,
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        imagePath: imagePath
     })
     PostModel.updateOne({_id: id}, post).then((data)=> {
         res.status(201).json({

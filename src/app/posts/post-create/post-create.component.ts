@@ -1,10 +1,9 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { IPost } from '../post.model';
 import { PostsService } from '../posts.service';
-import { mineType } from './mine-type.validator';
+import { mimeType } from './mime-type.validator';
 
 @Component({
     templateUrl: './post-create.component.html',
@@ -29,10 +28,9 @@ export class PostCreateComponent implements OnInit{
         this.postForm = this.fb.group({
             title: ['', [Validators.required, Validators.minLength(3)]],
             content: ['', [Validators.required]],
-            imagePath: [],
             image: new FormControl(null, {
                 validators: [Validators.required],
-                asyncValidators: [mineType]
+                asyncValidators: [mimeType]
             })
         });
         this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -43,11 +41,11 @@ export class PostCreateComponent implements OnInit{
                 this.postsService.getPostById(this.postId).subscribe(res => {
                     this.isLoading = false;
                     this.post = res.post;
+                    this.imageUrl = this.post.imagePath;
                     this.postForm.patchValue({
                         title: this.post.title,
                         content: this.post.content,
                         image: this.post.imagePath,
-                        imagePath: this.post.imagePath
                     })
                 });
             }else {
@@ -72,7 +70,7 @@ export class PostCreateComponent implements OnInit{
                 title: this.postForm.value.title,
                 content: this.postForm.value.content,
                 image: this.postForm.value.image,
-                imagePath: this.postForm.value.imagePath
+                imagePath: this.post.imagePath
             });
         }
         
@@ -86,7 +84,7 @@ export class PostCreateComponent implements OnInit{
         this.postForm.get('image').updateValueAndValidity();
         const reader = new FileReader();
         reader.onload = () => {
-            this.postForm.get('imagePath').setValue(reader.result);
+            this.imageUrl = reader.result;
         };
         reader.readAsDataURL(file);
     }

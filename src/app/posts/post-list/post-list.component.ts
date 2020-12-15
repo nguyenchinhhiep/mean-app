@@ -10,8 +10,10 @@ import { PostsService } from '../posts.service';
 export class PostListComponent implements OnInit {
     posts: IPost[] = [];
     isLoading: boolean = false;
+    totalPosts: number = 10;
+    pageSize: number = 5;
+    pageSizeOptions = [5,10,20]
     constructor(private postsService: PostsService){
-        
     }
 
     ngOnInit(){
@@ -21,6 +23,10 @@ export class PostListComponent implements OnInit {
             this.isLoading = false;
             this.posts = posts;
         })
+    }
+
+    onPageChange(event) {
+        console.log(event);
     }
 
     onDelete(postId: string){

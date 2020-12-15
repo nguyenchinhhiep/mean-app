@@ -43,7 +43,7 @@ export class PostsService {
         postData.append('content', post.content);
         postData.append('image', post.image, post.title);
 
-        this.http.post<{message: string, post: IPost}>('http://localhost:3000/api/posts', postData)
+        this.http.post<{message: string, post: any}>('http://localhost:3000/api/posts', postData)
         .subscribe(res => {
             const postAdded: IPost = {
                 id: res.post.id,
@@ -63,7 +63,7 @@ export class PostsService {
 
     updatePost(post: IPost){
         const postData = new FormData();
-        if(post.image ) {
+        if(!!post.image) {
             postData.append('id', post.id);
             postData.append('title', post.title);
             postData.append('content', post.content);
