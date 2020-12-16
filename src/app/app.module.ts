@@ -14,18 +14,21 @@ import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
-import { from } from 'rxjs';
+import { LoginComponent } from './auth/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PostsService } from './posts/posts.service';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     PostCreateComponent,
-    PostListComponent
+    PostListComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

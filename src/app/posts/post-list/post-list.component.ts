@@ -10,26 +10,46 @@ import { PostsService } from '../posts.service';
 export class PostListComponent implements OnInit {
     posts: IPost[] = [];
     isLoading: boolean = false;
-    totalPosts: number = 10;
     pageSize: number = 5;
-    pageSizeOptions = [5,10,20]
+    currentPage: number = 1;
+    pageSizeOptions = [5,10,20];
+    totalRecords: number;
     constructor(private postsService: PostsService){
     }
 
     ngOnInit(){
         this.isLoading = true;
-        this.postsService.getPosts();
-        this.postsService.getPostsUpdateListener().subscribe((posts: IPost[]) => {
+        const queryParams = {
+            pageSize: this.pageSize,
+            currentPage: this.currentPage
+        }
+        this.postsService.getPosts(queryParams);
+        this.postsService.getPostsUpdateListener().subscribe((data) => {
             this.isLoading = false;
-            this.posts = posts;
+            this.posts = data.posts;
+            this.totalRecords = data.totalRecords
         })
     }
 
     onPageChange(event) {
-        console.log(event);
+        this.isLoading = true;
+       this.currentPage = event.pageIndex + 1;
+       this.pageSize = event.pageSize;
+       const queryParams = {
+        pageSize: this.pageSize,
+        currentPage: this.currentPage
+    }
+       this.postsService.getPosts(queryParams);
     }
 
     onDelete(postId: string){
-        this.postsService.deletePost(postId);
+        this.isLoading = true;
+        this.postsService.deletePost(postId).subscribe(res => {
+            this.isLoading = false;
+            this.postsService.getPosts({
+                pageSize: this.pageSize,
+                currentPage: this.currentPage
+            })
+        });
     }
 }

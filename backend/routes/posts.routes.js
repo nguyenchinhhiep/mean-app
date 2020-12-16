@@ -45,10 +45,23 @@ router.post('',multer({storage: storage}).single('image'),(req, res, next) => {
    
 })
 router.get('', (req, res, next) => {
-    PostModel.find().then(document => {
+    const pageSize = +req.query.pageSize;
+    const currentPage = +req.query.page;
+    const postQuery = PostModel.find();
+    let fetchPosts;
+    if(pageSize && currentPage) {
+        postQuery.skip(pageSize * (currentPage - 1))
+        .limit(pageSize);
+
+    }
+    postQuery.then(document => {
+        fetchPosts = document;
+        return PostModel.countDocuments();
+    }).then(totalRecords => {
         res.status(200).json({
             message: 'SUCCESS',
-            posts: document
+            posts: fetchPosts,
+            totalRecords: totalRecords
         });
     });
 });
