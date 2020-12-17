@@ -10,9 +10,9 @@ export class SignupComponent {
     isLoading: boolean;
     constructor(private authService: AuthService){}
     
-    onSignup(form: NgForm){
+    onSignup(form){
         if(form.invalid) return;
-        this.authService.onSignup(form.value).subscribe(res =>{
+        this.authService.signup(form.value).subscribe(res =>{
             console.log(res);
         });
     }
