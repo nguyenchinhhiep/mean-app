@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/auth.service';
 import { IPost } from '../post.model';
 import { PostsService } from '../posts.service';
 
@@ -14,7 +15,8 @@ export class PostListComponent implements OnInit {
     currentPage: number = 1;
     pageSizeOptions = [5,10,20];
     totalRecords: number;
-    constructor(private postsService: PostsService){
+    isAuthenticated: boolean;
+    constructor(private postsService: PostsService, private authService: AuthService){
     }
 
     ngOnInit(){
@@ -24,6 +26,9 @@ export class PostListComponent implements OnInit {
             currentPage: this.currentPage
         }
         this.postsService.getPosts(queryParams);
+        this.authService.authStatus$.subscribe(res => {
+            this.isAuthenticated = res;
+        })
         this.postsService.getPostsUpdateListener().subscribe((data) => {
             this.isLoading = false;
             this.posts = data.posts;

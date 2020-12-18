@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCardModule} from '@angular/material/card';
@@ -20,6 +20,8 @@ import { PostsService } from './posts/posts.service';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 import { SignupComponent } from './auth/signup/signup.component';
+import { AuthInterceptor } from './auth/signup/auth.interceptor';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { SignupComponent } from './auth/signup/signup.component';
     MatPaginatorModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [PostsService],
+  providers: [PostsService, AuthGuard,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
