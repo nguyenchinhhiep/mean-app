@@ -4,4 +4,5 @@ export interface IPost {
     content: string;
     image?: File,
     imagePath?: string;
+    createdBy: string;
 }

@@ -14,6 +14,7 @@ export class PostListComponent implements OnInit {
     pageSize: number = 5;
     currentPage: number = 1;
     pageSizeOptions = [5,10,20];
+    userId: string;
     totalRecords: number;
     isAuthenticated: boolean;
     constructor(private postsService: PostsService, private authService: AuthService){
@@ -21,6 +22,8 @@ export class PostListComponent implements OnInit {
 
     ngOnInit(){
         this.isLoading = true;
+        this.userId = this.authService.getUserId();
+        console.log(this.userId);
         const queryParams = {
             pageSize: this.pageSize,
             currentPage: this.currentPage

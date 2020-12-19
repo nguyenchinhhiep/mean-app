@@ -11,6 +11,7 @@ import { IAuthData } from "./auth-data.model";
 export class AuthService {
     private token: string;
     private tokenTimer: any;
+    private userId: string;
     private authStatus = new BehaviorSubject<boolean>(null);
     public authStatus$ = this.authStatus.asObservable();
 
@@ -21,10 +22,15 @@ export class AuthService {
         this.authStatus.next(true);
     }
 
+    public getUserId(): string {
+        return this.userId;
+    }
+
     public saveAuthData(expirationDate: Date) {
         const authData = {
             token: this.token,
-            expirationDate: expirationDate.toISOString()
+            expirationDate: expirationDate.toISOString(),
+            userId: this.userId
         }
         localStorage.setItem('authData', JSON.stringify(authData));
     }
@@ -34,6 +40,10 @@ export class AuthService {
     }
     public getToken(): string {
         return this.token; 
+    }
+
+    public setUserId(id: string): void {
+        this.userId = id;
     }
 
     public setTokenTimer(duration: number) {
@@ -46,7 +56,7 @@ export class AuthService {
     }
 
     login(data: IAuthData) {
-        return this.http.post<{token: string, expireIn: number}>('http://localhost:3000/api/posts/login', data);
+        return this.http.post<{token: string, expiresIn: number, userId: string}>('http://localhost:3000/api/posts/login', data);
     }
 
     logout() {
@@ -63,11 +73,12 @@ export class AuthService {
         const authData = this.getAuthData();
         const now = new Date();
         if(authData) {
-            const expireIn = authData.expirationDate.getTime() - now.getTime();
+            const expireIn = new Date(authData.expirationDate).getTime() - now.getTime();
             if(expireIn > 0) {
                 this.token = authData.token;
+                this.userId = authData.userId
                 this.authStatus.next(true);
-                this.setTokenTimer(expireIn);
+                this.setTokenTimer(expireIn/1000);
             }
         }
         

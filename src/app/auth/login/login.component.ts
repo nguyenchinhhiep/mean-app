@@ -16,10 +16,12 @@ export class LoginComponent {
         if(form.invalid) return;
         this.authService.login(form.value).subscribe(res => {
             this.authService.setToken(res.token);
-            this.authService.setTokenTimer(res.expireIn);
+            this.authService.setTokenTimer(res.expiresIn);
+            this.authService.setUserId(res.userId);
             const now = new Date();
-            const expirationDate = now.getTime() + res.expireIn;
+            const expirationDate = now.getTime() + res.expiresIn *1000;
             this.authService.saveAuthData(new Date(expirationDate)); 
+            
             this.router.navigate(['/']);
         })
     }

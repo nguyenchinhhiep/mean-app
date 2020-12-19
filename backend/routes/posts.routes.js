@@ -30,7 +30,8 @@ router.post('',checkAuth,multer({storage: storage}).single('image'),(req, res, n
     const post = new PostModel({
         title: req.body.title,
         content: req.body.content,
-        imagePath: url + '/images/' + req.file.filename
+        imagePath: url + '/images/' + req.file.filename,
+        createdBy: req.userData.userId
     });
     post.save().then(createdPost => {
         res.status(201).json({
@@ -94,18 +95,34 @@ router.put('/:id',checkAuth, multer({storage: storage}).single('image'),(req, re
         _id: id,
         title: req.body.title,
         content: req.body.content,
-        imagePath: imagePath
+        imagePath: imagePath,
+        createdBy: req.userData.userId
     })
-    PostModel.updateOne({_id: id}, post).then((data)=> {
-        res.status(201).json({
-            message: 'SUCCESS'
-        })
+    PostModel.updateOne({_id: id, createdBy: req.userData.userId}, post).then((data)=> {
+        if(data.nModified > 0) {
+            res.status(201).json({
+                message: 'SUCCESS'
+            })
+        } else {
+            res.status(401).json({
+                message: 'NOT AUTHORIZED'
+            })
+        }
+        
     })
 })
 router.delete("/:id",checkAuth, (req,res, next) => {
     const id = req.params.id;
     PostModel.deleteOne({_id: id}).then(result => {
-        console.log(result);
+        if(result.n > 0) {
+            res.status(201).json({
+                message: 'SUCCESS'
+            })
+        } else {
+            res.status(401).json({
+                message: 'NOT AUTHORIZED'
+            })
+        }
         res.status(200).json({
             message: 'SUCCESS'
         })

@@ -61,7 +61,8 @@ export class PostCreateComponent implements OnInit{
             const post: IPost = {  
                 title: this.postForm.value.title,
                 content: this.postForm.value.content,
-                image: this.postForm.value.image
+                image: this.postForm.value.image,
+                createdBy: null
             }
             this.postsService.addPost(post);
         } else {
@@ -70,7 +71,8 @@ export class PostCreateComponent implements OnInit{
                 title: this.postForm.value.title,
                 content: this.postForm.value.content,
                 image: this.postForm.value.image,
-                imagePath: this.post.imagePath
+                imagePath: this.post.imagePath,
+                createdBy: null
             });
         }
         
