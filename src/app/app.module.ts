@@ -8,6 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { PostCreateComponent } from './posts/post-create/post-create.component';
@@ -20,8 +21,9 @@ import { PostsService } from './posts/posts.service';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 import { SignupComponent } from './auth/signup/signup.component';
-import { AuthInterceptor } from './auth/signup/auth.interceptor';
+import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthGuard } from './auth/auth.guard';
+import { ErrorInterceptor } from './error.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,10 +47,12 @@ import { AuthGuard } from './auth/auth.guard';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatSnackBarModule,
     RouterModule.forRoot(routes)
   ],
   providers: [PostsService, AuthGuard,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

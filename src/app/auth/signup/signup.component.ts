@@ -14,6 +14,10 @@ export class SignupComponent {
         if(form.invalid) return;
         this.authService.signup(form.value).subscribe(res =>{
             console.log(res);
+        }, err => {
+            
+        }, () => {
+            this.isLoading = false;
         });
     }
 }
