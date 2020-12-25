@@ -3,8 +3,10 @@ import { ThrowStmt } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject} from "rxjs";
+import { environment } from "src/environments/environment";
 import { IAuthData } from "./auth-data.model";
 
+const BACKEND_URL = environment.apiUrl + 'posts/';
 @Injectable({
     providedIn: 'root'
 })
@@ -52,11 +54,11 @@ export class AuthService {
         }, duration * 1000);
     }
     signup(data: IAuthData) {
-        return this.http.post('http://localhost:3000/api/posts/signup', data);
+        return this.http.post(BACKEND_URL + 'signup', data);
     }
 
     login(data: IAuthData) {
-        return this.http.post<{token: string, expiresIn: number, userId: string}>('http://localhost:3000/api/posts/login', data);
+        return this.http.post<{token: string, expiresIn: number, userId: string}>(BACKEND_URL + 'login', data);
     }
 
     logout() {

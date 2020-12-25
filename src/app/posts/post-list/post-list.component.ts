@@ -23,7 +23,6 @@ export class PostListComponent implements OnInit {
     ngOnInit(){
         this.isLoading = true;
         this.userId = this.authService.getUserId();
-        console.log(this.userId);
         const queryParams = {
             pageSize: this.pageSize,
             currentPage: this.currentPage
@@ -52,12 +51,12 @@ export class PostListComponent implements OnInit {
 
     onDelete(postId: string){
         this.isLoading = true;
-        this.postsService.deletePost(postId).subscribe(res => {
-            this.isLoading = false;
+        this.postsService.deletePost(postId).subscribe(res => {            
             this.postsService.getPosts({
                 pageSize: this.pageSize,
                 currentPage: this.currentPage
-            })
+            });
+            this.isLoading = false;
         });
     }
 }

@@ -10,7 +10,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler){
        return next.handle(req).pipe(
            catchError((error: HttpErrorResponse) => {
-            this._snackBar.open('An error occured', 'hide', {
+            this._snackBar.open(error.error.message, 'close', {
                 duration: 2000,
               });
                return throwError(error);

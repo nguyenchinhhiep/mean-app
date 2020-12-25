@@ -2,8 +2,8 @@
     <a routerLink="/">MEAN APP</a>
     <ul style="margin-left: auto;">
         
-        <li>
-            <a  mat-button routerLink="/create" routerLinkActive="mat-accent">Create Post</a>
+        <li *ngIf="isAuthenticated">
+            <a mat-button routerLink="/create" routerLinkActive="mat-accent">Create Post</a>
         </li>
         <li *ngIf="!isAuthenticated">
             <a  mat-button routerLink="/signup" routerLinkActive="mat-accent">Sign Up</a>

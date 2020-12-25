@@ -77,7 +77,7 @@ export class PostCreateComponent implements OnInit{
         }
         
         
-        this.postForm.reset();
+        // this.postForm.reset();
     }
 
     onFileChange(event: Event){
